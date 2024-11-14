@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ComponentType } from 'react'
 import { Tabs } from 'expo-router'
 import {
   FontAwesome5,
@@ -14,16 +14,25 @@ interface TabBarIconProps {
   size: number
 }
 
+const iconComponents: Record<string, ComponentType<TabBarIconProps>> = {
+  airbnb: FontAwesome5,
+  'message-outline': MaterialCommunityIcons,
+  default: Ionicons,
+}
+
 const Layout = () => {
   const renderTabBarIcon = ({ name, color, size }: TabBarIconProps) => {
-    if (typeof name === 'string' && name === 'airbnb') {
-      return <FontAwesome5 name={name} color={color} size={size} />
-    }
-    if (typeof name === 'string' && name === 'message-outline') {
-      return <MaterialCommunityIcons name={name} color={color} size={size} />
-    }
-    return <Ionicons name={name} color={color} size={size} />
+    const IconComponent = iconComponents[name] || iconComponents.default
+    return <IconComponent name={name} color={color} size={size} />
   }
+
+  const screens = [
+    { name: 'index', label: 'Explore', icon: 'search' },
+    { name: 'wishlists', label: 'Wishlists', icon: 'heart-outline' },
+    { name: 'trips', label: 'Trips', icon: 'airbnb' },
+    { name: 'inbox', label: 'Inbox', icon: 'message-outline' },
+    { name: 'profile', label: 'Profile', icon: 'person-circle-outline' },
+  ]
   return (
     <Tabs
       screenOptions={{
@@ -31,46 +40,17 @@ const Layout = () => {
         tabBarLabelStyle: { fontFamily: 'mon-sb' },
       }}
     >
-      <Tabs.Screen
-        name='index'
-        options={{
-          tabBarLabel: 'Explore',
-          tabBarIcon: ({ color, size }) =>
-            renderTabBarIcon({ name: 'search', color, size }),
-        }}
-      />
-      <Tabs.Screen
-        name='wishlists'
-        options={{
-          tabBarLabel: 'Wishlists',
-          tabBarIcon: ({ color, size }) =>
-            renderTabBarIcon({ name: 'heart-outline', color, size }),
-        }}
-      />
-      <Tabs.Screen
-        name='trips'
-        options={{
-          tabBarLabel: 'Trips',
-          tabBarIcon: ({ color, size }) =>
-            renderTabBarIcon({ name: 'airbnb', color, size }),
-        }}
-      />
-      <Tabs.Screen
-        name='inbox'
-        options={{
-          tabBarLabel: 'Inbox',
-          tabBarIcon: ({ color, size }) =>
-            renderTabBarIcon({ name: 'message-outline', color, size }),
-        }}
-      />
-      <Tabs.Screen
-        name='profile'
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) =>
-            renderTabBarIcon({ name: 'person-circle-outline', color, size }),
-        }}
-      />
+      {screens.map(({ name, label, icon }) => (
+        <Tabs.Screen
+          key={name}
+          name={name}
+          options={{
+            tabBarLabel: label,
+            tabBarIcon: ({ color, size }) =>
+              renderTabBarIcon({ name: icon, color, size }),
+          }}
+        />
+      ))}
     </Tabs>
   )
 }
