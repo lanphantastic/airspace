@@ -1,77 +1,27 @@
-import React from 'react'
-import { useOAuth } from '@clerk/clerk-expo'
-import { Ionicons } from '@expo/vector-icons'
-import { useRouter } from 'expo-router'
+// screens/Page.tsx
+import React, { useCallback } from 'react'
 import {
   View,
   StyleSheet,
   TextInput,
   Text,
-  TouchableOpacity,
   Alert,
+  TouchableOpacity,
 } from 'react-native'
+import { useRouter } from 'expo-router'
 
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/Styles'
-import { useWarmUpBrowser } from '../hooks/useWarmUpBrowser'
+import OAuthButton from '@/components/OAuthButton'
+import { useOAuthHandlers } from '../hooks/useOAuthHandlers'
 
-enum Strategy {
-  Google = 'oauth_google',
-  Apple = 'oauth_apple',
-  Facebook = 'oauth_facebook',
-}
-
-const Page = () => {
-  useWarmUpBrowser()
-
+const LoginPage: React.FC = () => {
   const router = useRouter()
-  const { startOAuthFlow: googleAuth } = useOAuth({ strategy: Strategy.Google })
-  const { startOAuthFlow: appleAuth } = useOAuth({ strategy: Strategy.Apple })
-  const { startOAuthFlow: facebookAuth } = useOAuth({
-    strategy: Strategy.Facebook,
-  })
+  const { googleAuth, appleAuth, facebookAuth } = useOAuthHandlers(router)
 
-  const onSelectAuth = async (strategy: Strategy) => {
-    const authMethod = {
-      [Strategy.Google]: googleAuth,
-      [Strategy.Apple]: appleAuth,
-      [Strategy.Facebook]: facebookAuth,
-    }[strategy]
-
-    try {
-      const { createdSessionId, setActive } = await authMethod()
-
-      if (createdSessionId) {
-        setActive!({ session: createdSessionId })
-        router.back()
-      }
-    } catch (err) {
-      console.error('OAuth error', err)
-      Alert.alert(
-        'Authentication Error',
-        'Failed to authenticate. Please try again.',
-      )
-    }
-  }
-
-  const OAuthButton = ({
-    strategy,
-    iconName,
-    label,
-  }: {
-    strategy: Strategy
-    iconName: string
-    label: string
-  }) => (
-    <TouchableOpacity
-      style={styles.btnOutline}
-      onPress={() => onSelectAuth(strategy)}
-      accessibilityLabel={`Continue with ${label}`}
-    >
-      <Ionicons name={iconName} size={24} style={styles.btnIcon} />
-      <Text style={styles.btnOutlineText}>{label}</Text>
-    </TouchableOpacity>
-  )
+  const handleOAuthError = useCallback((error: Error) => {
+    Alert.alert('Authentication Error', error.message)
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -93,57 +43,39 @@ const Page = () => {
 
       <View style={styles.buttonGroup}>
         <OAuthButton
-          strategy={Strategy.Google}
           iconName='logo-google'
           label='Continue with Google'
+          onPress={() => googleAuth().catch(handleOAuthError)}
         />
         <OAuthButton
-          strategy={Strategy.Apple}
           iconName='logo-apple'
           label='Continue with Apple'
+          onPress={() => appleAuth().catch(handleOAuthError)}
         />
         <OAuthButton
-          strategy={Strategy.Facebook}
           iconName='logo-facebook'
           label='Continue with Facebook'
+          onPress={() => facebookAuth().catch(handleOAuthError)}
         />
-        <TouchableOpacity style={styles.btnOutline}>
-          <Ionicons name='call-outline' size={24} style={styles.btnIcon} />
-          <Text style={styles.btnOutlineText}>Continue with Phone</Text>
-        </TouchableOpacity>
+        <OAuthButton
+          iconName='call-outline'
+          label='Continue with Phone'
+          onPress={() => Alert.alert('Phone Auth', 'Not implemented yet!')}
+        />
       </View>
     </View>
   )
 }
 
-export default Page
+export default LoginPage
 
 const styles = StyleSheet.create({
   buttonGroup: {
     gap: 20,
   },
-  btnOutline: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: Colors.light.grey,
-    height: 50,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-  },
-  btnIcon: {
-    marginRight: 8,
-  },
-  btnOutlineText: {
-    color: '#000',
-    fontSize: 16,
-    fontFamily: 'mon-sb',
-  },
   container: {
+    backgroundColor: Colors.light.background,
     flex: 1,
-    backgroundColor: '#fff',
     padding: 26,
   },
   inputField: {
