@@ -1,6 +1,7 @@
 import React from 'react'
 import { ClerkProvider } from '@clerk/clerk-expo'
-import { useFontsLoader } from './hooks/useFontLoader'
+import useFontsLoader from './hooks/useFontLoader'
+
 import { CLERK_PUBLISHABLE_KEY, tokenCache } from './config/ClerkConfig'
 import RootLayoutNav from './navigation/RootLayoutNav'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { Stack, useRouter } from 'expo-router'
 
 import HeaderLeft from '@/components/HeaderLeft'
-import { useAuthRedirect } from '../hooks/useAuthRedirect'
+import useAuthRedirect from '../hooks/useAuthRedirect'
 
 export default function RootLayoutNav() {
   const router = useRouter()

@@ -1,6 +1,6 @@
 // ClerkConfig.ts
 
-import { SecureStoreTokenCache } from '../services/SecureStoreTokenCache'
+import SecureStoreTokenCache from '../services/SecureStoreTokenCache'
 
 export const CLERK_PUBLISHABLE_KEY =
   process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY

@@ -1,5 +1,7 @@
-export enum Strategy {
+enum Strategy {
   Google = 'oauth_google',
   Apple = 'oauth_apple',
   Facebook = 'oauth_facebook',
 }
+
+export default Strategy

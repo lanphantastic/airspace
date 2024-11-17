@@ -1,14 +1,14 @@
 import { useOAuth } from '@clerk/clerk-expo'
 import { Router } from 'expo-router'
 
-import { Strategy } from '../types/enum'
+import Strategy from '../types/enum'
 
 interface AuthResponse {
   createdSessionId: string | null
   setActive?: (params: { session: string }) => void
 }
 
-export const useOAuthHandlers = (router: Router) => {
+const useOAuthHandlers = (router: Router) => {
   const { startOAuthFlow: googleAuth } = useOAuth({ strategy: Strategy.Google })
   const { startOAuthFlow: appleAuth } = useOAuth({ strategy: Strategy.Apple })
   const { startOAuthFlow: facebookAuth } = useOAuth({
@@ -35,3 +35,5 @@ export const useOAuthHandlers = (router: Router) => {
     facebookAuth: () => handleOAuth(facebookAuth),
   }
 }
+
+export default useOAuthHandlers

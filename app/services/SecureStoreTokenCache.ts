@@ -7,7 +7,7 @@ export interface ITokenCache {
   saveToken(key: string, value: string): Promise<void>
 }
 
-export class SecureStoreTokenCache implements ITokenCache {
+class SecureStoreTokenCache implements ITokenCache {
   async getToken(key: string): Promise<string | null> {
     try {
       return await SecureStore.getItemAsync(key)
@@ -29,3 +29,5 @@ export class SecureStoreTokenCache implements ITokenCache {
     await this.setToken(key, value) // No need to set twice
   }
 }
+
+export default SecureStoreTokenCache

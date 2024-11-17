@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'expo-router'
 import { useAuth } from '@clerk/clerk-expo'
 
-export function useAuthRedirect() {
+function useAuthRedirect() {
   const router = useRouter()
   const { isLoaded, isSignedIn } = useAuth()
 
@@ -16,3 +16,5 @@ export function useAuthRedirect() {
     }
   }, [isLoaded, isSignedIn, router])
 }
+
+export default useAuthRedirect

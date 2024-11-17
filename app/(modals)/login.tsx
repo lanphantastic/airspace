@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router'
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/Styles'
 import OAuthButton from '@/components/OAuthButton'
-import { useOAuthHandlers } from '../hooks/useOAuthHandlers'
+import useOAuthHandlers from '../hooks/useOAuthHandlers'
 
 const LoginPage: React.FC = () => {
   const router = useRouter()

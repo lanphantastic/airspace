@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 
-export function useFontsLoader() {
+function useFontsLoader() {
   const [fontsLoaded, fontsError] = useFonts({
     mon: require('../../assets/fonts/Montserrat-Regular.ttf'),
     'mon-sb': require('../../assets/fonts/Montserrat-SemiBold.ttf'),
@@ -24,3 +24,5 @@ export function useFontsLoader() {
 
   return fontsLoaded
 }
+
+export default useFontsLoader
