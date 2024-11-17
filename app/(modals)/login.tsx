@@ -17,7 +17,6 @@ import useOAuthHandlers from '../hooks/useOAuthHandlers'
 
 const LoginPage: React.FC = () => {
   const router = useRouter()
-  console.log('Login Page Mounted')
   const { googleAuth, appleAuth, facebookAuth } = useOAuthHandlers(router)
 
   const handleOAuthError = useCallback((error: Error) => {
