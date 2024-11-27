@@ -1,5 +1,3 @@
-// ClerkConfig.ts
-
 import SecureStoreTokenCache from '../services/SecureStoreTokenCache'
 
 export const CLERK_PUBLISHABLE_KEY =
