@@ -1,20 +1,20 @@
-// RootLayoutNav.tsx
 import React from 'react'
-import { Stack, useRouter } from 'expo-router'
+import { Stack } from 'expo-router'
 
-import HeaderLeft from '@/components/HeaderLeft'
 import useAuthRedirect from '../hooks/useAuthRedirect'
 
-export default function RootLayoutNav() {
-  const router = useRouter()
+interface RootLayoutNavProps {
+  renderHeaderLeft: React.JSX.Element
+}
 
+const RootLayoutNav: React.FC<RootLayoutNavProps> = ({ renderHeaderLeft }) => {
   useAuthRedirect()
 
   return (
     <Stack
       screenOptions={{
         headerTitleStyle: { fontFamily: 'mon' },
-        headerLeft: () => <HeaderLeft router={router} />,
+        headerLeft: () => renderHeaderLeft,
       }}
     >
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
@@ -42,3 +42,5 @@ export default function RootLayoutNav() {
     </Stack>
   )
 }
+
+export default RootLayoutNav
