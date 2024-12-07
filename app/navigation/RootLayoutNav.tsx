@@ -1,20 +1,21 @@
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Stack } from 'expo-router'
-
 import useAuthRedirect from '../hooks/useAuthRedirect'
 
 interface RootLayoutNavProps {
-  renderHeaderLeft: React.JSX.Element
+  renderHeaderLeft: () => ReactElement
 }
 
 const RootLayoutNav: React.FC<RootLayoutNavProps> = ({ renderHeaderLeft }) => {
   useAuthRedirect()
 
+  const defaultHeaderTitleStyle = { fontFamily: 'mon' }
+
   return (
     <Stack
       screenOptions={{
-        headerTitleStyle: { fontFamily: 'mon' },
-        headerLeft: () => renderHeaderLeft,
+        headerTitleStyle: defaultHeaderTitleStyle,
+        headerLeft: renderHeaderLeft,
       }}
     >
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
@@ -26,12 +27,7 @@ const RootLayoutNav: React.FC<RootLayoutNavProps> = ({ renderHeaderLeft }) => {
           presentation: 'modal',
         }}
       />
-      <Stack.Screen
-        name='listing/[id]'
-        options={{
-          headerTitleStyle: { fontFamily: 'mon' },
-        }}
-      />
+      <Stack.Screen name='listing/[id]' options={{ headerTitle: '' }} />
       <Stack.Screen
         name='(modals)/booking'
         options={{

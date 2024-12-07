@@ -1,5 +1,5 @@
 import React from 'react'
-import { useRouter } from 'expo-router'
+
 import { ClerkProvider } from '@clerk/clerk-expo'
 import useFontsLoader from './hooks/useFontLoader'
 
@@ -13,9 +13,8 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const fontsLoaded = useFontsLoader()
-  const router = useRouter()
 
-  const renderHeaderLeft = <HeaderLeft router={router} />
+  const renderHeaderLeft = () => <HeaderLeft />
 
   if (!fontsLoaded) {
     return null
