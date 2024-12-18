@@ -1,5 +1,4 @@
-// screens/Page.tsx
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   View,
   StyleSheet,
@@ -18,10 +17,37 @@ import useOAuthHandlers from '../hooks/useOAuthHandlers'
 const LoginPage: React.FC = () => {
   const router = useRouter()
   const { googleAuth, appleAuth, facebookAuth } = useOAuthHandlers(router)
+  const [email, setEmail] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleOAuthError = useCallback((error: Error) => {
     Alert.alert('Authentication Error', error.message)
   }, [])
+
+  const handleContinue = useCallback(async () => {
+    if (!email.trim()) {
+      Alert.alert('Error', 'Please enter an email address')
+      return
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      Alert.alert('Error', 'Please enter a valid email address')
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      // Implement your email auth logic here
+      // await emailAuth(email)
+      router.push('/(tabs)')
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        error instanceof Error ? error.message : 'Authentication failed',
+      )
+    } finally {
+      setIsLoading(false)
+    }
+  }, [email, router])
 
   return (
     <View style={styles.container}>
@@ -29,10 +55,18 @@ const LoginPage: React.FC = () => {
         autoCapitalize='none'
         placeholder='Email'
         style={[defaultStyles.inputField, styles.inputField]}
+        value={email}
+        onChangeText={setEmail}
       />
 
-      <TouchableOpacity style={defaultStyles.btn}>
-        <Text style={defaultStyles.btnText}>Continue</Text>
+      <TouchableOpacity
+        style={[defaultStyles.btn, isLoading && defaultStyles.btnDisabled]}
+        onPress={handleContinue}
+        disabled={isLoading}
+      >
+        <Text style={defaultStyles.btnText}>
+          {isLoading ? 'Please wait...' : 'Continue'}
+        </Text>
       </TouchableOpacity>
 
       <View style={styles.separatorContainer}>
