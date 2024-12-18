@@ -13,6 +13,7 @@ import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/Styles'
 import OAuthButton from '@/components/OAuthButton'
 import useOAuthHandlers from '../hooks/useOAuthHandlers'
+import { isValidEmail } from '../utils/validation'
 
 const LoginPage: React.FC = () => {
   const router = useRouter()
@@ -29,7 +30,7 @@ const LoginPage: React.FC = () => {
       Alert.alert('Error', 'Please enter an email address')
       return
     }
-    if (!/\S+@\S+\.\S+/.test(email)) {
+    if (!isValidEmail(email)) {
       Alert.alert('Error', 'Please enter a valid email address')
       return
     }
