@@ -3,6 +3,7 @@ import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
+import { defaultStyles } from '@/constants/Styles'
 
 interface OAuthButtonProps {
   iconName: string
@@ -20,7 +21,7 @@ const OAuthButton: React.FC<OAuthButtonProps> = ({
     onPress={onPress}
     accessibilityLabel={`Continue with ${label}`}
   >
-    <Ionicons name={iconName} size={24} style={styles.btnIcon} />
+    <Ionicons name={iconName} size={24} style={defaultStyles.btnIcon} />
     <Text style={styles.btnOutlineText}>{label}</Text>
   </TouchableOpacity>
 )

@@ -13,6 +13,17 @@ export const defaultStyles = StyleSheet.create({
     left: 16,
     position: 'absolute',
   },
+  btnDisabled: {
+    opacity: 0.5,
+    backgroundColor: Colors.light.grey,
+    borderColor: Colors.light.grey,
+    borderWidth: 1,
+    borderRadius: 8,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    cursor: 'not-allowed',
+  },
   btnText: {
     color: '#fff',
     fontSize: 16,
