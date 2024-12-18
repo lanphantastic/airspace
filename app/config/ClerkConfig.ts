@@ -9,6 +9,4 @@ if (!CLERK_PUBLISHABLE_KEY) {
   )
 }
 
-const tokenCache = new SecureStoreTokenCache()
-
-export default tokenCache
+export const tokenCache = new SecureStoreTokenCache()
