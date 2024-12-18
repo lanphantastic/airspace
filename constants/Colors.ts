@@ -11,6 +11,8 @@ export default {
     primary: '#FF385C',
     grey: '#5E5D5E',
     dark: '#1A1A1A',
+    lightGrey: '#c2c2c2',
+    grey02: '#A2A0A2',
   },
   dark: {
     text: '#fff',
@@ -21,5 +23,7 @@ export default {
     primary: '#FF385C',
     grey: '#5E5D5E',
     dark: '#1A1A1A',
+    lightGrey: '#c2c2c2',
+    grey02: '#A2A0A2',
   },
 }
