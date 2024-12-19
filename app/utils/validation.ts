@@ -4,3 +4,8 @@ export const EMAIL_REGEX = /\S+@\S+\.\S+/
 export const isValidEmail = (email: string): boolean => {
   return EMAIL_REGEX.test(email)
 }
+
+export default {
+  isValidEmail,
+  EMAIL_REGEX,
+}
