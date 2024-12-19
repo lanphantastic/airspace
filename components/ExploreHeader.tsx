@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native'
-import React from 'react'
+import * as Haptics from 'expo-haptics'
 import { Link } from 'expo-router'
+import React, { useRef, useState } from 'react'
+import { Ionicons, MaterialIcons } from '@expo/vector-icons'
+
 import Colors from '@/constants/Colors'
-import { Ionicons } from '@expo/vector-icons'
-import { categories } from '@/app/model/category'
+import { categories } from '@/app/mock/category'
 
 const fontFamily = {
   mon: 'mon',
@@ -19,6 +21,20 @@ const fontFamily = {
 }
 
 const ExploreHeader = () => {
+  const scrollRef = useRef<ScrollView>(null)
+  const itemsRef = useRef<(any | null)[]>([])
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const selectedCategory = (index: number) => {
+    const selected = itemsRef.current[index]
+    setActiveIndex(index)
+    selected?.measure((x: number) => {
+      scrollRef.current?.scrollTo({ x: x - 16, y: 0, animated: true })
+    })
+
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+  }
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -48,10 +64,39 @@ const ExploreHeader = () => {
           </TouchableOpacity>
         </View>
 
-        <ScrollView horizontal>
-          {categories.map(category => (
-            <TouchableOpacity key={category.id} style={styles.categoriesButton}>
-              <Text style={styles.categoryText}>{category.name}</Text>
+        <ScrollView
+          horizontal
+          ref={scrollRef}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollViewContent}
+        >
+          {categories.map((category, index) => (
+            <TouchableOpacity
+              ref={el => (itemsRef.current[index] = el)}
+              key={index}
+              style={
+                activeIndex === index
+                  ? styles.categoriesButtonActive
+                  : styles.categoriesButton
+              }
+              onPress={() => selectedCategory(index)}
+            >
+              <MaterialIcons
+                name={category.icon}
+                size={24}
+                color={
+                  activeIndex === index ? Colors.light.text : Colors.light.grey
+                }
+              />
+              <Text
+                style={
+                  activeIndex === index
+                    ? styles.categoryTextActive
+                    : styles.categoryText
+                }
+              >
+                {category.name}
+              </Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -67,9 +112,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: 16,
     paddingHorizontal: 24,
+    gap: 10,
   },
   categoriesButton: {
     alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingBottom: 8,
+  },
+  categoriesButtonActive: {
+    alignItems: 'center',
+    borderBottomColor: Colors.light.text,
+    borderBottomWidth: 2,
     flex: 1,
     justifyContent: 'center',
     paddingBottom: 8,
@@ -79,23 +133,16 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.monSb,
     fontSize: 14,
   },
-  // categoriesButtonActive: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   borderBottomColor: '#000',
-  //   borderBottomWidth: 2,
-  //   paddingBottom: 8,
-  // },
-  // categoryTextActive: {
-  //   fontSize: 14,
-  //   fontFamily: fontFamily.monSb,
-  //   color: Colors.light.text,
-  // },
+  categoryTextActive: {
+    color: Colors.light.text,
+    fontFamily: fontFamily.monSb,
+    fontSize: 14,
+  },
+
   container: {
     backgroundColor: Colors.light.background,
     elevation: 2,
-    height: 130,
+    height: 160,
     paddingTop: 10,
     shadowColor: Colors.light.text,
     shadowOffset: {
@@ -115,6 +162,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.background,
     flex: 1,
   },
+  scrollViewContent: {
+    alignItems: 'center',
+    gap: 20,
+    paddingBottom: 15,
+    paddingHorizontal: 16,
+  },
   searchButton: {
     alignItems: 'center',
     backgroundColor: Colors.light.background,
@@ -122,6 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: StyleSheet.hairlineWidth,
     elevation: 2,
+    flex: 1,
     flexDirection: 'row',
     gap: 10,
     padding: 14,
@@ -132,7 +186,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.12,
     shadowRadius: 8,
-    width: 280,
+    // width: 300,
   },
 })
 
