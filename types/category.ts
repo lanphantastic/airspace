@@ -1,4 +1,4 @@
-import { MaterialIcons } from '@expo/vector-icons'
+import { Category } from '@/app/model/category'
 
 export interface CategoryItemProps {
   category: Category
@@ -8,10 +8,4 @@ export interface CategoryItemProps {
 
 export interface CategoryItemRef {
   measure: (callback: (x: number) => void) => void
-}
-
-export interface Category {
-  id: string
-  name: string
-  icon: keyof typeof MaterialIcons.glyphMap
 }
