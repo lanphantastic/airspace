@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { useRouter } from 'expo-router'
+import * as WebBrowser from 'expo-web-browser'
 
 import Colors from '@/constants/Colors'
 import { defaultStyles } from '@/constants/Styles'
@@ -16,6 +17,8 @@ import useOAuthHandlers from '../hooks/useOAuthHandlers'
 import { isValidEmail } from '../utils/validation'
 
 const LoginPage: React.FC = () => {
+  WebBrowser.maybeCompleteAuthSession()
+
   const router = useRouter()
   const { googleAuth, appleAuth, facebookAuth } = useOAuthHandlers(router)
   const [email, setEmail] = useState('')
