@@ -9,7 +9,11 @@ import CategoryItem from './CategoryItem'
 import { CategoryItemRef } from '@/types/category'
 import OptionSearch from './OptionSearch'
 
-const ExploreHeader = () => {
+const ExploreHeader = ({
+  onCategoryChanged,
+}: {
+  onCategoryChanged: (category: string) => void
+}) => {
   const scrollRef = useRef<ScrollView>(null)
   const itemsRef = useRef<(CategoryItemRef | null)[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
@@ -22,6 +26,7 @@ const ExploreHeader = () => {
     })
 
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    onCategoryChanged(categories[index].name)
   }
 
   return (
@@ -38,13 +43,13 @@ const ExploreHeader = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollViewContent}
         >
-          {categories.map(category => (
+          {categories.map((category, index) => (
             <CategoryItem
-              key={category.id}
-              ref={el => (itemsRef.current[Number(category.id)] = el)}
+              key={index}
+              ref={el => (itemsRef.current[index] = el)}
               category={category}
-              isActive={activeIndex === Number(category.id)}
-              onPress={() => handleCategoryPress(Number(category.id))}
+              isActive={activeIndex === index}
+              onPress={() => handleCategoryPress(index)}
             />
           ))}
         </ScrollView>
