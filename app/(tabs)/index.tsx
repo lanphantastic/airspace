@@ -4,7 +4,11 @@ import ExploreHeader from '@/components/ExploreHeader'
 import { Stack } from 'expo-router'
 import Listings from '@/components/Listings'
 
-// const Header = () => <ExploreHeader />
+const Header = ({
+  onDataChanged,
+}: {
+  onDataChanged: (category: string) => void
+}) => <ExploreHeader onCategoryChanged={onDataChanged} />
 
 const Page = () => {
   const [category, setCategory] = useState<string>('Tiny homes')
@@ -12,13 +16,12 @@ const Page = () => {
   const onDataChanged = (newCategory: string) => {
     setCategory(newCategory)
   }
+
+  const screenOptions = () => <Header onDataChanged={onDataChanged} />
+
   return (
     <View style={styles.container}>
-      <Stack.Screen
-        options={{
-          header: () => <ExploreHeader onCategoryChanged={onDataChanged} />,
-        }}
-      />
+      <Stack.Screen options={{ header: screenOptions }} />
       <Listings listings={[]} category={category} />
     </View>
   )
