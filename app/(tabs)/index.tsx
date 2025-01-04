@@ -1,7 +1,8 @@
 import { View, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Stack } from 'expo-router'
 
+import listingsData from '@/assets/data/airbnb-listings.json'
 import ExploreHeader from '@/components/ExploreHeader'
 import Listings from '@/components/Listings'
 
@@ -12,6 +13,7 @@ const Header = ({
 }) => <ExploreHeader onCategoryChanged={onDataChanged} />
 
 const Page = () => {
+  const listings = useMemo(() => listingsData as any, [])
   const [category, setCategory] = useState<string>('Tiny homes')
 
   const onDataChanged = (newCategory: string) => {
@@ -23,7 +25,7 @@ const Page = () => {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ header: screenOptions }} />
-      <Listings listings={[]} category={category} />
+      <Listings listings={listings} category={category} refresh={1} />
     </View>
   )
 }
@@ -31,7 +33,7 @@ const Page = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 230, //! 230 is the height of the header. it will be removed in the future
+    marginTop: 155, //! 230 is the height of the header. it will be removed in the future
   },
 })
 
