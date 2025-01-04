@@ -1,7 +1,8 @@
 import { View, StyleSheet } from 'react-native'
 import React, { useState } from 'react'
-import ExploreHeader from '@/components/ExploreHeader'
 import { Stack } from 'expo-router'
+
+import ExploreHeader from '@/components/ExploreHeader'
 import Listings from '@/components/Listings'
 
 const Header = ({

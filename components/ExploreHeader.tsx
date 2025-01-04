@@ -2,11 +2,11 @@ import { View, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
 import * as Haptics from 'expo-haptics'
 import React, { useRef, useState } from 'react'
 
+import SearchBar from './SearchBar'
 import Colors from '@/constants/Colors'
 import { categories } from '@/app/mock/category'
-import SearchBar from './SearchBar'
-import CategoryItem from './CategoryItem'
 import { CategoryItemRef } from '@/types/category'
+import CategoryItem from './CategoryItem'
 import OptionSearch from './OptionSearch'
 
 const ExploreHeader = ({
